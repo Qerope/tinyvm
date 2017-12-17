@@ -10,6 +10,9 @@ enum {
     OP_HALT,
     OP_PUSH,
     OP_ADD,
+    OP_SUB,
+    OP_MUL,
+    OP_DIV,
     OP_PRINT,
 };
 

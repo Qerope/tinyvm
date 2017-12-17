@@ -39,6 +39,21 @@ void vm_run(struct vm *vm)
             push(vm, a + b);
             break;
         }
+        case OP_SUB: {
+            int32_t b = pop(vm), a = pop(vm);
+            push(vm, a - b);
+            break;
+        }
+        case OP_MUL: {
+            int32_t b = pop(vm), a = pop(vm);
+            push(vm, a * b);
+            break;
+        }
+        case OP_DIV: {
+            int32_t b = pop(vm), a = pop(vm);
+            push(vm, a / b);
+            break;
+        }
         case OP_PRINT:
             printf("%d\n", pop(vm));
             break;
