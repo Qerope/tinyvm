@@ -57,6 +57,15 @@ void vm_run(struct vm *vm)
         case OP_PRINT:
             printf("%d\n", pop(vm));
             break;
+        case OP_JMP:
+            vm->pc = fetch32(vm);
+            break;
+        case OP_JZ: {
+            uint32_t target = fetch32(vm);
+            if (pop(vm) == 0)
+                vm->pc = target;
+            break;
+        }
         }
     }
 }

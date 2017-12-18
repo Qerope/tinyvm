@@ -14,6 +14,8 @@ enum {
     OP_MUL,
     OP_DIV,
     OP_PRINT,
+    OP_JMP,
+    OP_JZ,
 };
 
 struct vm {
