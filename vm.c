@@ -66,6 +66,15 @@ void vm_run(struct vm *vm)
                 vm->pc = target;
             break;
         }
+        case OP_CALL: {
+            uint32_t target = fetch32(vm);
+            vm->rstack[vm->rsp++] = vm->pc;
+            vm->pc = target;
+            break;
+        }
+        case OP_RET:
+            vm->pc = vm->rstack[--vm->rsp];
+            break;
         }
     }
 }
