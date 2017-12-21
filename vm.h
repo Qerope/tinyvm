@@ -6,6 +6,7 @@
 
 #define STACK_MAX 256
 #define RSTACK_MAX 64
+#define GLOBALS 16
 
 enum {
     OP_HALT,
@@ -19,6 +20,8 @@ enum {
     OP_JZ,
     OP_CALL,
     OP_RET,
+    OP_LOAD,
+    OP_STORE,
 };
 
 struct vm {
@@ -29,6 +32,7 @@ struct vm {
     int sp;
     uint32_t rstack[RSTACK_MAX];
     int rsp;
+    int32_t globals[GLOBALS];
 };
 
 void vm_run(struct vm *vm);

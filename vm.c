@@ -75,6 +75,16 @@ void vm_run(struct vm *vm)
         case OP_RET:
             vm->pc = vm->rstack[--vm->rsp];
             break;
+        case OP_LOAD: {
+            int32_t n = fetch32(vm);
+            push(vm, vm->globals[n]);
+            break;
+        }
+        case OP_STORE: {
+            int32_t n = fetch32(vm);
+            vm->globals[n] = pop(vm);
+            break;
+        }
         }
     }
 }
