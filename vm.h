@@ -22,7 +22,15 @@ enum {
     OP_RET,
     OP_LOAD,
     OP_STORE,
+    OP_COUNT
 };
+
+struct opinfo {
+    const char *name;
+    int has_imm;
+};
+
+extern const struct opinfo opinfo[OP_COUNT];
 
 struct vm {
     const uint8_t *code;
@@ -36,5 +44,6 @@ struct vm {
 };
 
 void vm_run(struct vm *vm);
+int assemble(const char *src, uint8_t **code, size_t *len);
 
 #endif

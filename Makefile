@@ -2,7 +2,6 @@ CC = gcc
 CFLAGS = -std=c99 -Wall -Wextra -O2 -g
 
 SRC = main.c vm.c asm.c
-SRC = main.c vm.c
 OBJ = $(SRC:.c=.o)
 
 tinyvm: $(OBJ)

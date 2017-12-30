@@ -4,6 +4,22 @@
 
 #include "vm.h"
 
+const struct opinfo opinfo[OP_COUNT] = {
+    [OP_HALT] = {"halt", 0},
+    [OP_PUSH] = {"push", 1},
+    [OP_ADD] = {"add", 0},
+    [OP_SUB] = {"sub", 0},
+    [OP_MUL] = {"mul", 0},
+    [OP_DIV] = {"div", 0},
+    [OP_PRINT] = {"print", 0},
+    [OP_JMP] = {"jmp", 1},
+    [OP_JZ] = {"jz", 1},
+    [OP_CALL] = {"call", 1},
+    [OP_RET] = {"ret", 0},
+    [OP_LOAD] = {"load", 1},
+    [OP_STORE] = {"store", 1},
+};
+
 static void push(struct vm *vm, int32_t v)
 {
     vm->stack[vm->sp++] = v;
