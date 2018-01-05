@@ -20,6 +20,12 @@ const struct opinfo opinfo[OP_COUNT] = {
     [OP_STORE] = {"store", 1},
 };
 
+static void die(struct vm *vm, const char *msg)
+{
+    fprintf(stderr, "vm error at %04x: %s\n", vm->pc, msg);
+    exit(1);
+}
+
 static void push(struct vm *vm, int32_t v)
 {
     vm->stack[vm->sp++] = v;
@@ -27,6 +33,8 @@ static void push(struct vm *vm, int32_t v)
 
 static int32_t pop(struct vm *vm)
 {
+    if (vm->sp == 0)
+        die(vm, "stack underflow");
     return vm->stack[--vm->sp];
 }
 
@@ -42,6 +50,8 @@ static int32_t fetch32(struct vm *vm)
 void vm_run(struct vm *vm)
 {
     for (;;) {
+        if (vm->pc >= vm->len)
+            die(vm, "pc out of range");
         int op = vm->code[vm->pc++];
 
         switch (op) {
@@ -89,18 +99,26 @@ void vm_run(struct vm *vm)
             break;
         }
         case OP_RET:
+            if (vm->rsp == 0)
+                die(vm, "return stack underflow");
             vm->pc = vm->rstack[--vm->rsp];
             break;
         case OP_LOAD: {
             int32_t n = fetch32(vm);
+            if (n < 0 || n >= GLOBALS)
+                die(vm, "bad global slot");
             push(vm, vm->globals[n]);
             break;
         }
         case OP_STORE: {
             int32_t n = fetch32(vm);
+            if (n < 0 || n >= GLOBALS)
+                die(vm, "bad global slot");
             vm->globals[n] = pop(vm);
             break;
         }
+        default:
+            die(vm, "bad opcode");
         }
     }
 }
