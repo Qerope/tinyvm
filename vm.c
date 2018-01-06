@@ -77,6 +77,8 @@ void vm_run(struct vm *vm)
         }
         case OP_DIV: {
             int32_t b = pop(vm), a = pop(vm);
+            if (b == 0)
+                die(vm, "division by zero");
             push(vm, a / b);
             break;
         }
