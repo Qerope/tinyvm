@@ -45,5 +45,6 @@ struct vm {
 
 void vm_run(struct vm *vm);
 int assemble(const char *src, uint8_t **code, size_t *len);
+void disasm(const uint8_t *code, size_t len);
 
 #endif

@@ -6,7 +6,7 @@
 
 static void usage(void)
 {
-    fprintf(stderr, "usage: tinyvm prog.asm\n");
+    fprintf(stderr, "usage: tinyvm [-d] prog.asm\n");
     exit(2);
 }
 
@@ -41,14 +41,26 @@ int main(int argc, char **argv)
     size_t len;
     uint8_t *code;
     char *src;
+    int dump = 0;
     int i = 1;
 
+    for (; i < argc && argv[i][0] == '-'; i++) {
+        if (strcmp(argv[i], "-d") == 0)
+            dump = 1;
+        else
+            usage();
+    }
     if (i >= argc)
         usage();
 
     src = slurp(argv[i], &len);
     if (assemble(src, &code, &len) != 0)
         return 1;
+
+    if (dump) {
+        disasm(code, len);
+        return 0;
+    }
 
     vm.code = code;
     vm.len = len;

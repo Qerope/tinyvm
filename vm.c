@@ -124,3 +124,25 @@ void vm_run(struct vm *vm)
         }
     }
 }
+
+void disasm(const uint8_t *code, size_t len)
+{
+    for (size_t pc = 0; pc < len;) {
+        int op = code[pc];
+
+        if (op >= OP_COUNT) {
+            printf("%04zx  .byte %d\n", pc, op);
+            pc++;
+            continue;
+        }
+        if (opinfo[op].has_imm) {
+            int32_t v;
+            memcpy(&v, code + pc + 1, 4);
+            printf("%04zx  %-6s %d\n", pc, opinfo[op].name, v);
+            pc += 5;
+        } else {
+            printf("%04zx  %s\n", pc, opinfo[op].name);
+            pc++;
+        }
+    }
+}

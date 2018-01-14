@@ -6,3 +6,6 @@ Programs are written in a simple assembly language and assembled on load:
 
     make
     ./tinyvm examples/fib.asm
+Flags:
+
+    -d        disassemble instead of running
