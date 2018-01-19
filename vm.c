@@ -18,6 +18,8 @@ const struct opinfo opinfo[OP_COUNT] = {
     [OP_RET] = {"ret", 0},
     [OP_LOAD] = {"load", 1},
     [OP_STORE] = {"store", 1},
+    [OP_LT] = {"lt", 0},
+    [OP_EQ] = {"eq", 0},
 };
 
 static void die(struct vm *vm, const char *msg)
@@ -117,6 +119,16 @@ void vm_run(struct vm *vm)
             if (n < 0 || n >= GLOBALS)
                 die(vm, "bad global slot");
             vm->globals[n] = pop(vm);
+            break;
+        }
+        case OP_LT: {
+            int32_t b = pop(vm), a = pop(vm);
+            push(vm, a < b);
+            break;
+        }
+        case OP_EQ: {
+            int32_t b = pop(vm), a = pop(vm);
+            push(vm, a == b);
             break;
         }
         default:

@@ -22,6 +22,8 @@ enum {
     OP_RET,
     OP_LOAD,
     OP_STORE,
+    OP_LT,
+    OP_EQ,
     OP_COUNT
 };
 
