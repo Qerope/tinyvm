@@ -87,7 +87,7 @@ int assemble(const char *src, uint8_t **code, size_t *len)
                 fprintf(stderr, "line %d: %s needs an operand\n", lineno, word);
                 return -1;
             }
-            if (isdigit((unsigned char)arg[0])) {
+            if (isdigit((unsigned char)arg[0]) || arg[0] == '-') {
                 emit32(strtol(arg, NULL, 0));
             } else {
                 snprintf(fixups[nfixups].name, sizeof fixups[0].name, "%s", arg);
