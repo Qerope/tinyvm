@@ -24,6 +24,9 @@ enum {
     OP_STORE,
     OP_LT,
     OP_EQ,
+    OP_DUP,
+    OP_SWAP,
+    OP_DROP,
     OP_COUNT
 };
 

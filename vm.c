@@ -20,6 +20,9 @@ const struct opinfo opinfo[OP_COUNT] = {
     [OP_STORE] = {"store", 1},
     [OP_LT] = {"lt", 0},
     [OP_EQ] = {"eq", 0},
+    [OP_DUP] = {"dup", 0},
+    [OP_SWAP] = {"swap", 0},
+    [OP_DROP] = {"drop", 0},
 };
 
 static void die(struct vm *vm, const char *msg)
@@ -131,6 +134,21 @@ void vm_run(struct vm *vm)
             push(vm, a == b);
             break;
         }
+        case OP_DUP: {
+            int32_t a = pop(vm);
+            push(vm, a);
+            push(vm, a);
+            break;
+        }
+        case OP_SWAP: {
+            int32_t b = pop(vm), a = pop(vm);
+            push(vm, b);
+            push(vm, a);
+            break;
+        }
+        case OP_DROP:
+            pop(vm);
+            break;
         default:
             die(vm, "bad opcode");
         }
