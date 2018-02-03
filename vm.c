@@ -33,6 +33,8 @@ static void die(struct vm *vm, const char *msg)
 
 static void push(struct vm *vm, int32_t v)
 {
+    if (vm->sp >= STACK_MAX)
+        die(vm, "stack overflow");
     vm->stack[vm->sp++] = v;
 }
 
@@ -101,6 +103,8 @@ void vm_run(struct vm *vm)
         }
         case OP_CALL: {
             uint32_t target = fetch32(vm);
+            if (vm->rsp >= RSTACK_MAX)
+                die(vm, "return stack overflow");
             vm->rstack[vm->rsp++] = vm->pc;
             vm->pc = target;
             break;
