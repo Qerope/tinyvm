@@ -9,3 +9,4 @@ Programs are written in a simple assembly language and assembled on load:
 Flags:
 
     -d        disassemble instead of running
+    -t        trace every instruction to stderr

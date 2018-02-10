@@ -59,7 +59,10 @@ void vm_run(struct vm *vm)
     for (;;) {
         if (vm->pc >= vm->len)
             die(vm, "pc out of range");
+        uint32_t at = vm->pc;
         int op = vm->code[vm->pc++];
+        if (vm->trace)
+            fprintf(stderr, "%04x  %-6s sp=%d\n", at, opinfo[op].name, vm->sp);
 
         switch (op) {
         case OP_HALT:

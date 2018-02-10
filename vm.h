@@ -46,6 +46,7 @@ struct vm {
     uint32_t rstack[RSTACK_MAX];
     int rsp;
     int32_t globals[GLOBALS];
+    int trace;
 };
 
 void vm_run(struct vm *vm);
