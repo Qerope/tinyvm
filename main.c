@@ -6,7 +6,7 @@
 
 static void usage(void)
 {
-    fprintf(stderr, "usage: tinyvm [-d] [-t] prog.asm\n");
+    fprintf(stderr, "usage: tinyvm [-d] [-t] [-o out.bin] prog.asm|prog.bin\n");
     exit(2);
 }
 
@@ -43,6 +43,7 @@ int main(int argc, char **argv)
     char *src;
     int dump = 0;
     int trace = 0;
+    const char *outfile = NULL;
     int i = 1;
 
     for (; i < argc && argv[i][0] == '-'; i++) {
@@ -50,6 +51,8 @@ int main(int argc, char **argv)
             dump = 1;
         else if (strcmp(argv[i], "-t") == 0)
             trace = 1;
+        else if (strcmp(argv[i], "-o") == 0 && i + 1 < argc)
+            outfile = argv[++i];
         else
             usage();
     }
@@ -57,9 +60,21 @@ int main(int argc, char **argv)
         usage();
 
     src = slurp(argv[i], &len);
-    if (assemble(src, &code, &len) != 0)
+    if (strlen(argv[i]) > 4 && strcmp(argv[i] + strlen(argv[i]) - 4, ".bin") == 0) {
+        code = (uint8_t *)src;
+    } else if (assemble(src, &code, &len) != 0) {
         return 1;
+    }
 
+    if (outfile) {
+        FILE *f = fopen(outfile, "wb");
+        if (!f || fwrite(code, 1, len, f) != len) {
+            perror(outfile);
+            return 1;
+        }
+        fclose(f);
+        return 0;
+    }
     if (dump) {
         disasm(code, len);
         return 0;

@@ -10,3 +10,4 @@ Flags:
 
     -d        disassemble instead of running
     -t        trace every instruction to stderr
+    -o FILE   assemble to bytecode and write it to FILE
