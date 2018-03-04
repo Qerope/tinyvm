@@ -9,5 +9,8 @@ tinyvm: $(OBJ)
 
 %.o: %.c vm.h
 	$(CC) $(CFLAGS) -c -o $@ $<
+.PHONY: test
+test: tinyvm
+	sh tests/run.sh
 clean:
 	rm -f tinyvm $(OBJ)
