@@ -23,6 +23,9 @@ const struct opinfo opinfo[OP_COUNT] = {
     [OP_DUP] = {"dup", 0},
     [OP_SWAP] = {"swap", 0},
     [OP_DROP] = {"drop", 0},
+    [OP_ALLOC] = {"alloc", 0},
+    [OP_LOADH] = {"loadh", 0},
+    [OP_STOREH] = {"storeh", 0},
 };
 
 static void die(struct vm *vm, const char *msg)
@@ -156,6 +159,28 @@ void vm_run(struct vm *vm)
         case OP_DROP:
             pop(vm);
             break;
+        case OP_ALLOC: {
+            int32_t n = pop(vm);
+            if (n < 0 || vm->heap_top + n > HEAP_MAX)
+                die(vm, "out of heap");
+            push(vm, vm->heap_top);
+            vm->heap_top += n;
+            break;
+        }
+        case OP_LOADH: {
+            int32_t addr = pop(vm);
+            if (addr < 0 || (uint32_t)addr >= vm->heap_top)
+                die(vm, "bad heap address");
+            push(vm, vm->heap[addr]);
+            break;
+        }
+        case OP_STOREH: {
+            int32_t v = pop(vm), addr = pop(vm);
+            if (addr < 0 || (uint32_t)addr >= vm->heap_top)
+                die(vm, "bad heap address");
+            vm->heap[addr] = v;
+            break;
+        }
         default:
             die(vm, "bad opcode");
         }

@@ -7,6 +7,7 @@
 #define STACK_MAX 256
 #define RSTACK_MAX 64
 #define GLOBALS 16
+#define HEAP_MAX 65536
 
 enum {
     OP_HALT,
@@ -27,6 +28,9 @@ enum {
     OP_DUP,
     OP_SWAP,
     OP_DROP,
+    OP_ALLOC,
+    OP_LOADH,
+    OP_STOREH,
     OP_COUNT
 };
 
@@ -47,6 +51,8 @@ struct vm {
     int rsp;
     int32_t globals[GLOBALS];
     int trace;
+    uint8_t heap[HEAP_MAX];
+    uint32_t heap_top;
 };
 
 void vm_run(struct vm *vm);
