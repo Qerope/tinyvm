@@ -26,6 +26,7 @@ const struct opinfo opinfo[OP_COUNT] = {
     [OP_ALLOC] = {"alloc", 0},
     [OP_LOADH] = {"loadh", 0},
     [OP_STOREH] = {"storeh", 0},
+    [OP_PUTC] = {"putc", 0},
 };
 
 static void die(struct vm *vm, const char *msg)
@@ -181,6 +182,9 @@ void vm_run(struct vm *vm)
             vm->heap[addr] = v;
             break;
         }
+        case OP_PUTC:
+            putchar(pop(vm));
+            break;
         default:
             die(vm, "bad opcode");
         }

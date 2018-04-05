@@ -31,6 +31,7 @@ enum {
     OP_ALLOC,
     OP_LOADH,
     OP_STOREH,
+    OP_PUTC,
     OP_COUNT
 };
 
